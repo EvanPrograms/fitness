@@ -10,6 +10,7 @@ function App() {
   const [age, setAge] = useState(35)
   const [height, setHeight] = useState(200)
   const [weight, setWeight] = useState(100)
+  const [submit, setSubmit] = useState(0)
 
 
   useEffect(() => {
@@ -19,7 +20,7 @@ function App() {
         console.log(response.data.BMR)
         setBMR(response.data.BMR)
       })
-  }, [age, weight, height])
+  }, [submit])
 
   const handleAgeChange = (event) => {
     setAge(event.target.value)
@@ -31,6 +32,11 @@ function App() {
 
   const handleWeightChange = (event) => {
     setWeight(event.target.value)
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setSubmit((prevSubmit) => prevSubmit + 1)
   }
 
   return (
@@ -50,6 +56,7 @@ function App() {
           handleAgeChange={handleAgeChange}
           handleHeightChange={handleHeightChange}
           handleWeightChange={handleWeightChange}
+          handleSubmit={handleSubmit}
           age={age}
           height={height}
           weight={weight}
