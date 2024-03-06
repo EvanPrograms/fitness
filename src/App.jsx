@@ -2,44 +2,36 @@ import { useState, useEffect } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-import axios from 'axios';
+import fitService from './services/entry'
+import MeasurementsForm from './components/measurements';
 
 function App() {
-  const [bmr, setBMR] = useState(null);
+  const [bmr, setBMR] = useState(null)
+  const [age, setAge] = useState(35)
+  const [height, setHeight] = useState(200)
+  const [weight, setWeight] = useState(100)
 
-  const age = 10;
-  const weight = 100;
-  const height = 200;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const options = {
-          method: 'GET',
-          url: 'https://fitness-calculator.p.rapidapi.com/dailycalorie',
-          params: {
-            age: age,
-            gender: 'male',
-            height: height,
-            weight: weight,
-            activitylevel: 'level_1'
-          },
-          headers: {
-            'X-RapidAPI-Key': '93362f5fbdmsh8e0dfc89fd4eeffp163669jsn85b31968c91e',
-            'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com'
-          }
-        };
-        const response = await axios.request(options);
-        setBMR(response.data.data.BMR);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    fitService
+      .getBMR(age, weight, height)
+      .then(response => {
+        console.log(response.data.BMR)
+        setBMR(response.data.BMR)
+      })
+  }, [age, weight, height])
 
-    fetchData();
-  }, []);
+  const handleAgeChange = (event) => {
+    setAge(event.target.value)
+  }
 
-  
+  const handleHeightChange = (event) => {
+    setHeight(event.target.value)
+  }
+
+  const handleWeightChange = (event) => {
+    setWeight(event.target.value)
+  }
 
   return (
     <>
@@ -54,10 +46,18 @@ function App() {
       <h1>Vite + React</h1>
       <div>
         <p>Test BMI for Age: {age}, Height: {height}, Weight: {weight}</p>
+        <MeasurementsForm 
+          handleAgeChange={handleAgeChange}
+          handleHeightChange={handleHeightChange}
+          handleWeightChange={handleWeightChange}
+          age={age}
+          height={height}
+          weight={weight}
+        />
         <p>Basal metabolic rate: {bmr}</p>
       </div>
     </>
   );
 }
 
-export default App;
+export default App
