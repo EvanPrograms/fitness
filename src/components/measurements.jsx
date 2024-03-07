@@ -2,10 +2,12 @@ const MeasurementsForm = ({
   age, 
   weight, 
   height, 
+  sex,
   handleAgeChange, 
   handleHeightChange, 
   handleWeightChange,
-  handleSubmit
+  handleSubmit,
+  handleSexChange
   }) => {
   
   return (
@@ -19,6 +21,12 @@ const MeasurementsForm = ({
         </div>
         <div>
           weight: <input value={weight} onChange={handleWeightChange}/>
+        </div>
+        <div>
+          sex: <select value={sex} onChange={handleSexChange}>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
         </div>
         <div>
           <button type="submit">add</button>
